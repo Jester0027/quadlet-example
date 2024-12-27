@@ -1,0 +1,4 @@
+keycloak.local {
+    tls internal
+    reverse_proxy keycloak-container:8080
+}

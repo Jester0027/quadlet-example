@@ -1,0 +1,31 @@
+[Unit]
+Description=Keycloak container
+Requires=postgresql.service
+
+[Container]
+ContainerName=keycloak-container
+Image=quay.io/keycloak/keycloak:26.0.7
+Exec=start
+
+Environment=KC_BOOTSTRAP_ADMIN_USERNAME=admin
+Secret=keycloak_admin_password,type=env,target=KC_BOOTSTRAP_ADMIN_PASSWORD
+
+Environment=KC_DB=postgres
+Environment=KC_DB_URL_HOST=postgresql-container
+Environment=KC_DB_URL_DATABASE=keycloak
+Environment=KC_DB_USERNAME=keycloak
+Secret=postgres_keycloak_password,type=env,target=KC_DB_PASSWORD
+
+Environment=KC_PROXY_HEADERS=xforwarded
+Environment=KC_HOSTNAME=https://keycloak.local
+Environment=KC_HOSTNAME_ADMIN=https://keycloak.local
+Environment=KC_HTTP_ENABLED=true
+Environment=KC_HOSTNAME_DEBUG=true
+
+Network=playground.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target multi-user.target

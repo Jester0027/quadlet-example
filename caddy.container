@@ -1,0 +1,17 @@
+[Unit]
+Description=Caddy web server container
+
+[Container]
+ContainerName=caddy-container
+Image=docker.io/caddy:2.8.4
+PublishPort=80:80
+PublishPort=443:443
+
+Network=playground.network
+Volume=./http/Caddyfile:/etc/caddy/Caddyfile
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target multi-user.target
